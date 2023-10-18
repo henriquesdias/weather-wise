@@ -1,0 +1,7 @@
+dist
+coverage
+node_modules
+.eslintrc.cjs
+.prettierrc
+tailwind.config.js
+vite.config.ts
