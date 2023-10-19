@@ -3,7 +3,7 @@ import WeatherDisplay from "../components/WeatherDisplay";
 
 export default function Home() {
   return (
-    <div className="bg-principalBackground h-screen">
+    <div className="bg-principalBackground min-h-screen">
       <Header />
       <WeatherDisplay />
     </div>
