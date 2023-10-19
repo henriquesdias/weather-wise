@@ -46,6 +46,9 @@ export function WeatherIcon({ description }: WeatherIconsDescription) {
     "10d": rainDay,
     "10n": rain,
     "04n": fewCloudsNight,
+    "04d": fewCloudDay,
+    "03n": fewCloudDay,
+    "03d": fewCloudDay,
   };
   return (
     <img

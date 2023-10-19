@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { SearchIcon } from "../styles/Icons";
 import PrincipalWeather from "./PrincipalWeather";
@@ -7,39 +7,52 @@ import { WeatherDataApi, LocationData } from "../types";
 import SecundaryWeatherWrapper from "./SecundaryWeatherWrapper";
 import { selectItems } from "../utils";
 
-export default function WeatherDisplay() {
+type WeatherDisplayProps = {
+  search: string;
+};
+
+export default function WeatherDisplay({ search }: WeatherDisplayProps) {
   const [cityName, setCityName] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [weatherData, setWeatherData] = useState<WeatherDataApi | null>(null);
   const [forecastData, setForecastData] = useState<LocationData[] | null>(null);
-  async function searchLocation() {
-    if (cityName.trim() !== "") {
-      try {
-        const response = await getWeatherByCityName(cityName);
-        if (response.ok) {
-          const data = await response.json();
-          setWeatherData({ ...data });
-        } else {
-          throw new Error("error");
-        }
-      } catch (error) {
-        setError("City Not Found");
+  useEffect(() => {
+    if (search.trim() === "") return;
+    searchLocation(search);
+    searchForecast(search);
+    setCityName(search);
+  }, [search]);
+  async function searchLocation(name: string) {
+    if (name.trim() === "") {
+      return;
+    }
+    try {
+      const response = await getWeatherByCityName(name);
+      if (response.ok) {
+        const data = await response.json();
+        setWeatherData({ ...data });
+        setError(null);
+      } else {
+        throw new Error("error");
       }
+    } catch (error) {
+      setError("City Not Found");
     }
   }
-  async function searchForecast() {
-    if (cityName.trim() !== "") {
-      try {
-        const response = await getForecastByCityName(cityName);
-        if (response.ok) {
-          const { list } = await response.json();
-          setForecastData(() => [...selectItems(list)]);
-        } else {
-          throw new Error("error");
-        }
-      } catch (error) {
-        setError("City Not Found");
+  async function searchForecast(name: string) {
+    if (name.trim() === "") {
+      return;
+    }
+    try {
+      const response = await getForecastByCityName(name);
+      if (response.ok) {
+        const { list } = await response.json();
+        setForecastData(() => [...selectItems(list)]);
+      } else {
+        throw new Error("error");
       }
+    } catch (error) {
+      setError("City Not Found");
     }
   }
   return (
@@ -49,14 +62,15 @@ export default function WeatherDisplay() {
         <SearchIcon
           classname="text-3xl flex items-center justify-center pl-1"
           onClick={() => {
-            searchLocation();
-            searchForecast();
+            searchLocation(cityName);
+            searchForecast(cityName);
           }}
         />
         <input
           type="text"
           name="location"
           placeholder="Search location..."
+          value={cityName}
           onChange={(e) => setCityName(e.target.value)}
           className="outline-none bg-[#D9D9D9] rounded-3xl w-11/12 pl-1"
         />
