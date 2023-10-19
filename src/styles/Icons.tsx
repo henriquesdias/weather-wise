@@ -1,5 +1,5 @@
 import { TbCloudSearch } from "react-icons/tb";
-import { BsThermometerHalf } from "react-icons/bs";
+import { BsThermometerHalf, BsTrash3 } from "react-icons/bs";
 import { CiLocationOn } from "react-icons/ci";
 import rain from "../assets/rain.svg";
 import clearNight from "../assets/clear-night.svg";
@@ -31,6 +31,13 @@ export function LocationIcon({ classname }: ClassnameIcons) {
   return (
     <div className={`${classname}`}>
       <CiLocationOn />
+    </div>
+  );
+}
+export function TrashIcon({ classname }: ClassnameIcons) {
+  return (
+    <div className={`${classname}`}>
+      <BsTrash3 />
     </div>
   );
 }
