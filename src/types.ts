@@ -32,6 +32,14 @@ export type WeatherDataApi = {
     speed: number;
     deg: number;
   };
+  weather: [
+    {
+      id: number;
+      main: string;
+      description: string;
+      icon: string;
+    },
+  ];
 };
 export type LocationData = {
   dt: number;

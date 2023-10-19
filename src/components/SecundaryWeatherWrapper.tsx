@@ -12,6 +12,7 @@ export default function SecundaryWeatherWrapper({
       {forecastData?.map((e) => (
         <SecundaryWeather
           key={e.dt_txt}
+          icon={e.weather[0].icon}
           temperature={e.main.temp}
           time={e.dt_txt.split(" ")[0]}
         />

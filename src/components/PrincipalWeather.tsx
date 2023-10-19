@@ -1,5 +1,6 @@
 import { ThermometerIcon, LocationIcon } from "../styles/Icons";
 import { WeatherDataApi } from "../types";
+import { WeatherIcon } from "../styles/Icons";
 
 type PrincipalWeatherProps = {
   weatherData: WeatherDataApi | null;
@@ -18,7 +19,12 @@ export default function PrincipalWeather({
       </div>
       <div className="flex items-center justify-center text-4xl">
         <ThermometerIcon />
-        <span>{weatherData?.main.temp}&deg;C</span>
+        <span className="flex items-center">
+          {weatherData?.main.temp}&deg;C
+          {weatherData?.weather[0].icon && (
+            <WeatherIcon description={weatherData?.weather[0].icon} />
+          )}
+        </span>
       </div>
       <span className="underline">{data.toDateString()}</span>
       <div className="flex justify-between">
