@@ -27,7 +27,7 @@ Follow the instructions to run the app locally
    npm i
 ```
 
-4. Create a .env file at the root of the project and fill it in according to the .env.example file. In this case, the "VITE_API_KEY" variable should be the key that you get in the first step. Example:
+4. Create a .env file at the root of the project and fill it in according to the .env.example file. In this case, the "VITE_API_KEY" variable should be the key that you get in the first step.
 
 5. Run script
 
