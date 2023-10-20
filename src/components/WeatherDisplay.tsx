@@ -5,6 +5,7 @@ import PrincipalWeather from "./PrincipalWeather";
 import SecundaryWeatherWrapper from "./SecundaryWeatherWrapper";
 import useSearchLocation from "../hooks/useSearchLocation";
 import useSearchForecast from "../hooks/useSearchForecast";
+import { getWeatherByCoordinates } from "../api/weatherAPI";
 
 type WeatherDisplayProps = {
   search: string;
@@ -43,8 +44,9 @@ export default function WeatherDisplay({ search }: WeatherDisplayProps) {
           name="location"
           placeholder="Search location..."
           value={cityName}
+          autoComplete="off"
           onChange={(e) => setCityName(e.target.value)}
-          className="outline-none bg-[#D9D9D9] rounded-3xl w-11/12 pl-1"
+          className="outline-none bg-[#D9D9D9] rounded-3xl w-11/12 pl-1 focus:bg-[#D9D9D9]"
         />
       </form>
       <PrincipalWeather weatherData={weatherData} isLoading={isLoading} />

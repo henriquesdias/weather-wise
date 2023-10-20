@@ -1,6 +1,7 @@
 import { TbCloudSearch } from "react-icons/tb";
 import { BsThermometerHalf, BsTrash3 } from "react-icons/bs";
 import { CiLocationOn } from "react-icons/ci";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import rain from "../assets/rain.svg";
 import clearNight from "../assets/clear-night.svg";
 import fewCloudsNight from "../assets/few-clouds-night.svg";
@@ -38,6 +39,20 @@ export function TrashIcon({ classname }: ClassnameIcons) {
   return (
     <div className={`${classname}`}>
       <BsTrash3 />
+    </div>
+  );
+}
+export function HeartIcon({ classname }: ClassnameIcons) {
+  return (
+    <div className={`${classname}`}>
+      <AiOutlineHeart />
+    </div>
+  );
+}
+export function FillHeartIcon({ classname }: ClassnameIcons) {
+  return (
+    <div className={`${classname}`}>
+      <AiFillHeart />
     </div>
   );
 }

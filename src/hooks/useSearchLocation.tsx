@@ -27,5 +27,5 @@ export default function useSearchLocation() {
       setIsLoading(false);
     }
   }
-  return { isLoading, weatherData, error, searchLocation };
+  return { isLoading, weatherData, error, searchLocation, setWeatherData };
 }
