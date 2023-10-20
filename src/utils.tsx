@@ -14,3 +14,6 @@ export function selectItems(arr: LocationData[]) {
   }
   return newArr;
 }
+export function removeEmptySpaces(word: string) {
+  return word.replace(/\s+/g, " ").trim();
+}

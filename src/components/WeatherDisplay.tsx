@@ -6,6 +6,7 @@ import SecundaryWeatherWrapper from "./SecundaryWeatherWrapper";
 import useSearchLocation from "../hooks/useSearchLocation";
 import useSearchForecast from "../hooks/useSearchForecast";
 import { FavoritePlace } from "../types";
+import { removeEmptySpaces } from "../utils";
 
 type WeatherDisplayProps = {
   search: string;
@@ -31,7 +32,7 @@ export default function WeatherDisplay({
     if (search.trim() === "") return;
     searchLocation(search);
     searchForecast(search);
-    setCityName(search);
+    setCityName(search.trim());
   }, [search]);
   return (
     <main className="flex flex-col items-center px-5">
@@ -39,16 +40,17 @@ export default function WeatherDisplay({
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          searchLocation(cityName);
-          searchForecast(cityName);
+          searchLocation(removeEmptySpaces(cityName));
+          searchForecast(removeEmptySpaces(cityName));
+          setCityName(removeEmptySpaces(cityName));
         }}
         className="flex text-[#524E4E] bg-[#D9D9D9] rounded-3xl h-10 gap-4 w-72 mb-4"
       >
         <SearchIcon
           classname="text-3xl flex items-center justify-center pl-1"
           onClick={() => {
-            searchLocation(cityName);
-            searchForecast(cityName);
+            searchLocation(removeEmptySpaces(cityName));
+            searchForecast(removeEmptySpaces(cityName));
           }}
         />
         <input
