@@ -74,7 +74,7 @@ export function WeatherIcon({ description }: WeatherIconsDescription) {
   };
   return (
     <img
-      src={`${icons[description]}` || clouds}
+      src={`${icons[description] || clouds}`}
       alt="weather-icon"
       className="w-16"
     />

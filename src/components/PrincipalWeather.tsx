@@ -1,6 +1,8 @@
 import { ThermometerIcon, LocationIcon } from "../styles/Icons";
 import { WeatherDataApi } from "../types";
 import { WeatherIcon, HeartIcon, FillHeartIcon } from "../styles/Icons";
+import SkeletonLoading from "./SkeletonLoading";
+import useFavoritePlaces from "../hooks/useFavoritePlaces";
 
 type PrincipalWeatherProps = {
   weatherData: WeatherDataApi | null;
@@ -9,8 +11,10 @@ type PrincipalWeatherProps = {
 
 export default function PrincipalWeather({
   weatherData,
+  isLoading,
 }: PrincipalWeatherProps) {
   const data = new Date();
+  const { insertFavoritePlace } = useFavoritePlaces();
   function isAFavoritePlace() {
     const cityNames = localStorage.getItem("names");
     if (cityNames) {
@@ -27,14 +31,7 @@ export default function PrincipalWeather({
         onClick={() => {
           const cityName = weatherData?.name;
           const cityId = weatherData?.id;
-          if (!cityName || !cityId) {
-            return;
-          }
-          const cityNameAndId = localStorage.getItem("names") || "[]";
-          const cityNameAndIdParsed = JSON.parse(cityNameAndId);
-          if (cityNameAndIdParsed.find((e: any) => e.name === cityName)) return;
-          cityNameAndIdParsed.push({ name: cityName, id: cityId });
-          localStorage.setItem("names", JSON.stringify(cityNameAndIdParsed));
+          if (cityName && cityId) insertFavoritePlace(cityName, cityId);
         }}
       >
         {isAFavoritePlace() ? (
@@ -44,38 +41,73 @@ export default function PrincipalWeather({
         )}
       </div>
       <div className="flex items-center gap-2">
-        <h1>{weatherData?.name}</h1>
+        <SkeletonLoading
+          className="animate-pulse w-20 h-5 bg-slate-700 rounded-lg"
+          isLoading={isLoading}
+        >
+          <h1>{weatherData?.name}</h1>
+        </SkeletonLoading>
         <LocationIcon classname="text-2xl" />
       </div>
-      <div className="flex items-center justify-center text-4xl">
-        <ThermometerIcon />
-        <span className="flex items-center">
-          {weatherData?.main.temp}&deg;C
-          {weatherData?.weather[0].icon && (
-            <WeatherIcon description={weatherData?.weather[0].icon} />
-          )}
-        </span>
-      </div>
-      <span className="underline">{data.toDateString()}</span>
-      <div className="flex justify-between">
-        <div className="flex flex-col">
-          <span>HUMIDITY</span>
-          <span>{weatherData?.main.humidity}%</span>
-        </div>
-        <div className="flex flex-col">
-          <span>VISIBLITY</span>
-          <span>
-            {weatherData?.visibility && weatherData.visibility / 1000}km
+      <SkeletonLoading
+        isLoading={isLoading}
+        className="animate-pulse w-20 h-5 bg-slate-700 rounded-lg mx-auto"
+      >
+        <div className="flex items-center justify-center text-4xl">
+          <ThermometerIcon />
+          <span className="flex items-center">
+            {weatherData?.main.temp}&deg;C
+            {weatherData?.weather[0].icon && (
+              <WeatherIcon description={weatherData?.weather[0].icon} />
+            )}
           </span>
         </div>
-        <div className="flex flex-col">
-          <span>AIR PRESSURE</span>
-          <span>{weatherData?.main.pressure}hPa</span>
-        </div>
-        <div className="flex flex-col">
-          <span>WIND</span>
-          <span>{weatherData?.wind.speed}m/s</span>
-        </div>
+      </SkeletonLoading>
+      <SkeletonLoading
+        isLoading={isLoading}
+        className="animate-pulse w-20 h-5 bg-slate-700 rounded-lg"
+      >
+        <span className="underline">{data.toDateString()}</span>
+      </SkeletonLoading>
+      <div className="flex justify-between">
+        <SkeletonLoading
+          isLoading={isLoading}
+          className="animate-pulse w-20 h-5 bg-slate-700 rounded-lg mx-auto"
+        >
+          <div className="flex flex-col">
+            <span>HUMIDITY</span>
+            <span>{weatherData?.main.humidity}%</span>
+          </div>
+        </SkeletonLoading>
+        <SkeletonLoading
+          isLoading={isLoading}
+          className="animate-pulse w-20 h-5 bg-slate-700 rounded-lg mx-auto"
+        >
+          <div className="flex flex-col">
+            <span>VISIBLITY</span>
+            <span>
+              {weatherData?.visibility && weatherData.visibility / 1000}km
+            </span>
+          </div>
+        </SkeletonLoading>
+        <SkeletonLoading
+          isLoading={isLoading}
+          className="animate-pulse w-20 h-5 bg-slate-700 rounded-lg mx-auto"
+        >
+          <div className="flex flex-col">
+            <span>AIR PRESSURE</span>
+            <span>{weatherData?.main.pressure}hPa</span>
+          </div>
+        </SkeletonLoading>
+        <SkeletonLoading
+          isLoading={isLoading}
+          className="animate-pulse w-20 h-5 bg-slate-700 rounded-lg mx-auto"
+        >
+          <div className="flex flex-col">
+            <span>WIND</span>
+            <span>{weatherData?.wind.speed}m/s</span>
+          </div>
+        </SkeletonLoading>
       </div>
     </div>
   );

@@ -5,7 +5,6 @@ import PrincipalWeather from "./PrincipalWeather";
 import SecundaryWeatherWrapper from "./SecundaryWeatherWrapper";
 import useSearchLocation from "../hooks/useSearchLocation";
 import useSearchForecast from "../hooks/useSearchForecast";
-import { getWeatherByCoordinates } from "../api/weatherAPI";
 
 type WeatherDisplayProps = {
   search: string;
@@ -13,7 +12,11 @@ type WeatherDisplayProps = {
 
 export default function WeatherDisplay({ search }: WeatherDisplayProps) {
   const { error, isLoading, searchLocation, weatherData } = useSearchLocation();
-  const { searchForecast, forecastData } = useSearchForecast();
+  const {
+    isLoading: isLoadingForecast,
+    searchForecast,
+    forecastData,
+  } = useSearchForecast();
   const [cityName, setCityName] = useState<string>("");
   useEffect(() => {
     if (search.trim() === "") return;
@@ -50,7 +53,10 @@ export default function WeatherDisplay({ search }: WeatherDisplayProps) {
         />
       </form>
       <PrincipalWeather weatherData={weatherData} isLoading={isLoading} />
-      <SecundaryWeatherWrapper forecastData={forecastData} />
+      <SecundaryWeatherWrapper
+        forecastData={forecastData}
+        isLoading={isLoadingForecast}
+      />
     </main>
   );
 }

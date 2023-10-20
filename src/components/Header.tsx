@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import cloudImage from "../assets/cloud.svg";
 import { TrashIcon } from "../styles/Icons";
+import useFavoritePlaces from "../hooks/useFavoritePlaces";
 
 type HeaderProps = {
   setSearch: (newSearch: string) => void;
@@ -9,9 +10,7 @@ type HeaderProps = {
 
 export default function Header({ setSearch }: HeaderProps) {
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [favoritesLocations, setFavoritesLocations] = useState<
-    { name: string; id: number }[]
-  >(JSON.parse(localStorage.getItem("names") || "[]"));
+  const { favoritePlaces, setFavoritePlaces } = useFavoritePlaces();
   function deleteFavoritePlace(id: number) {
     const favoriteLocations = localStorage.getItem("names");
     if (favoriteLocations) {
@@ -23,8 +22,8 @@ export default function Header({ setSearch }: HeaderProps) {
         ),
       );
     }
-    setFavoritesLocations((locations) => {
-      return locations.filter((location) => location.id !== id);
+    setFavoritePlaces((places) => {
+      return places.filter((e) => e.id !== id);
     });
   }
   return (
@@ -42,8 +41,8 @@ export default function Header({ setSearch }: HeaderProps) {
           onClick={(event) => event.stopPropagation()}
         >
           <span className="font-bold mt-2">Favorite Places</span>
-          {favoritesLocations.length === 0 && "Empty"}
-          {favoritesLocations.map((info, index) => (
+          {favoritePlaces.length === 0 && "Empty"}
+          {favoritePlaces.map((info, index) => (
             <span
               className="flex items-center justify-between p-2 gap-2 w-full"
               key={index}
