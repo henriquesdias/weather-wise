@@ -1,9 +1,5 @@
 import { useState } from "react";
-
-type FavoritePlace = {
-  name: string;
-  id: number;
-};
+import { FavoritePlace } from "../types";
 
 export default function useFavoritePlaces() {
   const [favoritePlaces, setFavoritePlaces] = useState<FavoritePlace[]>(() => {
@@ -24,5 +20,6 @@ export default function useFavoritePlaces() {
     localStorage.setItem("names", JSON.stringify(cityNameAndIdParsed));
     setFavoritePlaces((values) => [...values, { name: cityName, id: cityId }]);
   }
+
   return { favoritePlaces, setFavoritePlaces, insertFavoritePlace };
 }
