@@ -9,7 +9,5 @@ body{
 div::-webkit-scrollbar {
   height: 8px;
 }
-/* div::-webkit-scrollbar-thumb {
-  background: #AC64C5; 
-} */
+
 

@@ -12,7 +12,24 @@ export default function PrincipalWeather({
 }: PrincipalWeatherProps) {
   const data = new Date();
   return (
-    <div className="sm:w-[530px] w-full h-72 bg-gradient-to-l from-[#333333] to-[#B167CB] rounded-xl sm:p-5 p-2 flex flex-col justify-between text-white sm:text-base text-xs">
+    <div className="sm:w-[530px] w-full h-72 bg-gradient-to-l from-[#333333] to-[#B167CB] rounded-xl sm:p-5 p-2 flex flex-col justify-between text-white sm:text-base text-xs relative">
+      <div
+        className="absolute top-4 right-4 border-solid	border-white border rounded-full w-5 h-5 flex items-center justify-center text-xl cursor-pointer"
+        onClick={() => {
+          const cityName = weatherData?.name;
+          const cityId = weatherData?.id;
+          if (!cityName || !cityId) {
+            return;
+          }
+          const cityNameAndId = localStorage.getItem("names") || "[]";
+          const cityNameAndIdParsed = JSON.parse(cityNameAndId);
+          if (cityNameAndIdParsed.find((e: any) => e.name === cityName)) return;
+          cityNameAndIdParsed.push({ name: cityName, id: cityId });
+          localStorage.setItem("names", JSON.stringify(cityNameAndIdParsed));
+        }}
+      >
+        +
+      </div>
       <div className="flex items-center gap-2">
         <h1>{weatherData?.name}</h1>
         <LocationIcon classname="text-2xl" />

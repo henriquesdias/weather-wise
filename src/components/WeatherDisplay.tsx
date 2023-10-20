@@ -1,67 +1,53 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { SearchIcon } from "../styles/Icons";
 import PrincipalWeather from "./PrincipalWeather";
-import { getWeatherByCityName, getForecastByCityName } from "../api/weatherAPI";
-import { WeatherDataApi, LocationData } from "../types";
 import SecundaryWeatherWrapper from "./SecundaryWeatherWrapper";
-import { selectItems } from "../utils";
+import useSearchLocation from "../hooks/useSearchLocation";
+import useSearchForecast from "../hooks/useSearchForecast";
 
-export default function WeatherDisplay() {
+type WeatherDisplayProps = {
+  search: string;
+};
+
+export default function WeatherDisplay({ search }: WeatherDisplayProps) {
+  const { error, isLoading, searchLocation, weatherData } = useSearchLocation();
+  const { searchForecast, forecastData } = useSearchForecast();
   const [cityName, setCityName] = useState<string>("");
-  const [error, setError] = useState<string | null>(null);
-  const [weatherData, setWeatherData] = useState<WeatherDataApi | null>(null);
-  const [forecastData, setForecastData] = useState<LocationData[] | null>(null);
-  async function searchLocation() {
-    if (cityName.trim() !== "") {
-      try {
-        const response = await getWeatherByCityName(cityName);
-        if (response.ok) {
-          const data = await response.json();
-          setWeatherData({ ...data });
-        } else {
-          throw new Error("error");
-        }
-      } catch (error) {
-        setError("City Not Found");
-      }
-    }
-  }
-  async function searchForecast() {
-    if (cityName.trim() !== "") {
-      try {
-        const response = await getForecastByCityName(cityName);
-        if (response.ok) {
-          const { list } = await response.json();
-          setForecastData(() => [...selectItems(list)]);
-        } else {
-          throw new Error("error");
-        }
-      } catch (error) {
-        setError("City Not Found");
-      }
-    }
-  }
+  useEffect(() => {
+    if (search.trim() === "") return;
+    searchLocation(search);
+    searchForecast(search);
+    setCityName(search);
+  }, [search]);
   return (
-    <main className="flex flex-col items-center pt-5 px-5">
-      <span className="text-[red]">{error}</span>
-      <div className="flex text-[#524E4E] bg-[#D9D9D9] rounded-3xl h-10 gap-4 w-72 mb-4">
+    <main className="flex flex-col items-center px-5">
+      <span className="text-[red] w-44 h-6 text-center">{error}</span>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          searchLocation(cityName);
+          searchForecast(cityName);
+        }}
+        className="flex text-[#524E4E] bg-[#D9D9D9] rounded-3xl h-10 gap-4 w-72 mb-4"
+      >
         <SearchIcon
           classname="text-3xl flex items-center justify-center pl-1"
           onClick={() => {
-            searchLocation();
-            searchForecast();
+            searchLocation(cityName);
+            searchForecast(cityName);
           }}
         />
         <input
           type="text"
           name="location"
           placeholder="Search location..."
+          value={cityName}
           onChange={(e) => setCityName(e.target.value)}
           className="outline-none bg-[#D9D9D9] rounded-3xl w-11/12 pl-1"
         />
-      </div>
-      <PrincipalWeather weatherData={weatherData} isLoading={false} />
+      </form>
+      <PrincipalWeather weatherData={weatherData} isLoading={isLoading} />
       <SecundaryWeatherWrapper forecastData={forecastData} />
     </main>
   );
