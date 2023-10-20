@@ -86,3 +86,7 @@ export type ForecastDataApi = {
   cnt: number;
   list: LocationData[];
 };
+export type FavoritePlace = {
+  name: string;
+  id: number;
+};

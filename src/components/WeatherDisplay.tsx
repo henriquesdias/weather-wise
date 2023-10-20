@@ -1,16 +1,25 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, Dispatch, SetStateAction } from "react";
 
 import { SearchIcon } from "../styles/Icons";
 import PrincipalWeather from "./PrincipalWeather";
 import SecundaryWeatherWrapper from "./SecundaryWeatherWrapper";
 import useSearchLocation from "../hooks/useSearchLocation";
 import useSearchForecast from "../hooks/useSearchForecast";
+import { FavoritePlace } from "../types";
 
 type WeatherDisplayProps = {
   search: string;
+  handlePlaces: {
+    favoritePlaces: FavoritePlace[];
+    insertFavoritePlace: (cityName: string, cityId: number) => void;
+    setFavoritePlaces: Dispatch<SetStateAction<FavoritePlace[]>>;
+  };
 };
 
-export default function WeatherDisplay({ search }: WeatherDisplayProps) {
+export default function WeatherDisplay({
+  search,
+  handlePlaces,
+}: WeatherDisplayProps) {
   const { error, isLoading, searchLocation, weatherData } = useSearchLocation();
   const {
     isLoading: isLoadingForecast,
@@ -47,12 +56,17 @@ export default function WeatherDisplay({ search }: WeatherDisplayProps) {
           name="location"
           placeholder="Search location..."
           value={cityName}
+          disabled={isLoading && isLoadingForecast}
           autoComplete="off"
           onChange={(e) => setCityName(e.target.value)}
-          className="outline-none bg-[#D9D9D9] rounded-3xl w-11/12 pl-1 focus:bg-[#D9D9D9]"
+          className="outline-none bg-[#D9D9D9] rounded-3xl w-11/12 pl-1 focus:bg-[#D9D9D9] disabled:opacity-50"
         />
       </form>
-      <PrincipalWeather weatherData={weatherData} isLoading={isLoading} />
+      <PrincipalWeather
+        weatherData={weatherData}
+        isLoading={isLoading}
+        handlePlaces={handlePlaces}
+      />
       <SecundaryWeatherWrapper
         forecastData={forecastData}
         isLoading={isLoadingForecast}

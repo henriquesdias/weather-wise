@@ -1,16 +1,20 @@
-import { useState } from "react";
+import { useState, Dispatch, SetStateAction } from "react";
 
 import cloudImage from "../assets/cloud.svg";
 import { TrashIcon } from "../styles/Icons";
-import useFavoritePlaces from "../hooks/useFavoritePlaces";
+import { FavoritePlace } from "../types";
 
 type HeaderProps = {
-  setSearch: (newSearch: string) => void;
+  setSearch: Dispatch<SetStateAction<string>>;
+  handlePlaces: {
+    favoritePlaces: FavoritePlace[];
+    insertFavoritePlace: (cityName: string, cityId: number) => void;
+    setFavoritePlaces: Dispatch<SetStateAction<FavoritePlace[]>>;
+  };
 };
 
-export default function Header({ setSearch }: HeaderProps) {
+export default function Header({ setSearch, handlePlaces }: HeaderProps) {
   const [showModal, setShowModal] = useState<boolean>(false);
-  const { favoritePlaces, setFavoritePlaces } = useFavoritePlaces();
   function deleteFavoritePlace(id: number) {
     const favoriteLocations = localStorage.getItem("names");
     if (favoriteLocations) {
@@ -22,7 +26,7 @@ export default function Header({ setSearch }: HeaderProps) {
         ),
       );
     }
-    setFavoritePlaces((places) => {
+    handlePlaces.setFavoritePlaces((places) => {
       return places.filter((e) => e.id !== id);
     });
   }
@@ -41,14 +45,14 @@ export default function Header({ setSearch }: HeaderProps) {
           onClick={(event) => event.stopPropagation()}
         >
           <span className="font-bold mt-2">Favorite Places</span>
-          {favoritePlaces.length === 0 && "Empty"}
-          {favoritePlaces.map((info, index) => (
+          {handlePlaces.favoritePlaces.length === 0 && "Empty"}
+          {handlePlaces.favoritePlaces.map((info, index) => (
             <span
               className="flex items-center justify-between p-2 gap-2 w-full"
               key={index}
             >
               <span
-                className="cursor-pointer hover:opacity-50"
+                className="cursor-pointer hover:opacity-50 text-ellipsis overflow-x-hidden max-w-[20ch] whitespace-nowrap"
                 onClick={() => {
                   setSearch(info.name);
                   setShowModal(false);
