@@ -21,10 +21,13 @@ export default function useSearchForecast() {
         setForecastData(() => [...selectItems(list)]);
         setIsLoading(false);
       } else {
-        throw new Error("error");
+        throw new Error(`${response.status}`);
       }
     } catch (error) {
-      setError("City Not Found");
+      if (error instanceof Error) {
+        if (error.message === "404") setError("Location Not Found");
+        if (error.message !== "404") setError("Problem with the search");
+      }
       setIsLoading(false);
     }
   }

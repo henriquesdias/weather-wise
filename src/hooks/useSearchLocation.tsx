@@ -20,10 +20,13 @@ export default function useSearchLocation() {
         setWeatherData({ ...data });
         setIsLoading(false);
       } else {
-        throw new Error("City Not Found");
+        throw new Error(`${response.status}`);
       }
     } catch (error) {
-      setError("Location Not Found");
+      if (error instanceof Error) {
+        if (error.message === "404") setError("Location Not Found");
+        if (error.message !== "404") setError("Problem with the search");
+      }
       setIsLoading(false);
     }
   }
