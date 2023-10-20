@@ -36,7 +36,7 @@ export default function WeatherDisplay({
   }, [search]);
   return (
     <main className="flex flex-col items-center px-5">
-      <span className="text-[red] w-44 h-6 text-center">{error}</span>
+      <span className="text-[red] w-64 h-6 text-center">{error}</span>
       <form
         onSubmit={(e) => {
           e.preventDefault();
