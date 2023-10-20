@@ -6,6 +6,7 @@ type SecundaryWeatherProps = {
   temperature: number;
   icon: string;
   isLoading: boolean;
+  hour: string;
 };
 
 export default function SecundaryWeather({
@@ -13,6 +14,7 @@ export default function SecundaryWeather({
   time,
   temperature,
   isLoading,
+  hour,
 }: SecundaryWeatherProps) {
   const day = time.split("-")[2];
   const month = time.split("-")[1];
@@ -22,7 +24,10 @@ export default function SecundaryWeather({
         isLoading={isLoading}
         className="animate-pulse w-20 h-5 bg-slate-700 rounded-lg mt-2"
       >
-        <div className="text-white">{`${day}/${month}`}</div>
+        <div className="text-white">{`${day}/${month} ${hour.slice(
+          0,
+          5,
+        )}`}</div>
       </SkeletonLoading>
       <SkeletonLoading
         isLoading={isLoading}
@@ -35,7 +40,7 @@ export default function SecundaryWeather({
           isLoading={isLoading}
           className="animate-pulse w-20 h-5 bg-slate-700 rounded-lg mb-2"
         >
-          <span className="text-white">{temperature}&deg;</span>
+          <span className="text-white">{temperature}&deg;C</span>
         </SkeletonLoading>
       </div>
     </div>
