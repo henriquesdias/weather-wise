@@ -12,7 +12,11 @@ type WeatherDisplayProps = {
 
 export default function WeatherDisplay({ search }: WeatherDisplayProps) {
   const { error, isLoading, searchLocation, weatherData } = useSearchLocation();
-  const { searchForecast, forecastData } = useSearchForecast();
+  const {
+    isLoading: isLoadingForecast,
+    searchForecast,
+    forecastData,
+  } = useSearchForecast();
   const [cityName, setCityName] = useState<string>("");
   useEffect(() => {
     if (search.trim() === "") return;
@@ -43,12 +47,16 @@ export default function WeatherDisplay({ search }: WeatherDisplayProps) {
           name="location"
           placeholder="Search location..."
           value={cityName}
+          autoComplete="off"
           onChange={(e) => setCityName(e.target.value)}
-          className="outline-none bg-[#D9D9D9] rounded-3xl w-11/12 pl-1"
+          className="outline-none bg-[#D9D9D9] rounded-3xl w-11/12 pl-1 focus:bg-[#D9D9D9]"
         />
       </form>
       <PrincipalWeather weatherData={weatherData} isLoading={isLoading} />
-      <SecundaryWeatherWrapper forecastData={forecastData} />
+      <SecundaryWeatherWrapper
+        forecastData={forecastData}
+        isLoading={isLoadingForecast}
+      />
     </main>
   );
 }

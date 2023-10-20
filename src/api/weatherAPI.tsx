@@ -16,3 +16,14 @@ export async function getForecastByCityName(cityName: string) {
     method: "GET",
   });
 }
+export async function getWeatherByCoordinates(
+  latitude: number,
+  longitude: number,
+) {
+  const URL = `${BASE_URL}weather?lat=${latitude}&lon=${longitude}&appid=${
+    import.meta.env.VITE_API_KEY
+  }&units=metric&lang=pt_br`;
+  return fetch(URL, {
+    method: "GET",
+  });
+}

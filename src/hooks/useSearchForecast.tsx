@@ -14,12 +14,12 @@ export default function useSearchForecast() {
     }
     try {
       setError("");
-      setIsLoading(false);
+      setIsLoading(true);
       const response = await getForecastByCityName(name);
       if (response.ok) {
         const { list } = await response.json();
         setForecastData(() => [...selectItems(list)]);
-        setIsLoading(true);
+        setIsLoading(false);
       } else {
         throw new Error("error");
       }
