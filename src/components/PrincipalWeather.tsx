@@ -58,7 +58,9 @@ export default function PrincipalWeather({
               className="animate-pulse w-20 h-5 bg-slate-700 rounded-lg"
               isLoading={isLoading}
             >
-              <h1>{weatherData?.name}</h1>
+              <h1>
+                {weatherData?.name} ({weatherData?.sys.country})
+              </h1>
             </SkeletonLoading>
             <LocationIcon classname="text-2xl" />
           </div>
@@ -66,7 +68,7 @@ export default function PrincipalWeather({
             isLoading={isLoading}
             className="animate-pulse w-20 h-5 bg-slate-700 rounded-lg mx-auto"
           >
-            <div className="flex items-center justify-center text-4xl">
+            <div className="flex items-center justify-center text-3xl">
               <ThermometerIcon />
               <span className="flex items-center">
                 {weatherData?.main.temp}&deg;C

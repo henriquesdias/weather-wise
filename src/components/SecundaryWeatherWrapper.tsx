@@ -18,6 +18,7 @@ export default function SecundaryWeatherWrapper({
           icon={e.weather[0].icon}
           temperature={e.main.temp}
           time={e.dt_txt.split(" ")[0]}
+          hour={e.dt_txt.split(" ")[1]}
         />
       ))}
     </div>
